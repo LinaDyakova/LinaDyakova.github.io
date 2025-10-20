@@ -33,66 +33,110 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Лабораторная работа №1'),
       ),
-      body: Column(
-        children: [
-          // Первый контейнер
-          Container(
-            width: double.infinity,
-            height: 100,
-            color: Colors.purpleAccent,
-            child: const Center(
-              child: Text(
-                'Me mew meow moew moew me mew moew',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Первый контейнер
+            Container(
+              width: double.infinity,
+              height: 100,
+              decoration: BoxDecoration(
+                color: Colors.purpleAccent,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.purple.withOpacity(0.5),
+                    blurRadius: 10,
+                    offset: const Offset(2, 4),
+                  )
+                ],
+              ),
+              child: const Center(
+                child: Text(
+                  'Me mew meow moew moew me mew moew',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.italic,
+                    letterSpacing: 1.2,
+                  ),
                 ),
               ),
             ),
-          ),
-          
-          // Row с тремя текстовыми элементами
-          Container(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'MEOW',
-                  style: TextStyle(fontSize: 16),
-                ),
-                Text(
-                  'meow',
-                  style: TextStyle(fontSize: 16),
-                ),
-                Text(
-                  'MEOW',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
+            
+            // Row с тремя текстовыми элементами
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    'MEOW',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                  Text(
+                    'meow',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.purple,
+                    ),
+                  ),
+                  Text(
+                    'MEOW',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          
-          // Второй контейнер
-          Container(
-            width: 200,
-            height: 150,
-            color: Colors.purple,
-            child: const Center(
-              child: Text(
-                'Meow me meow meoww mew mow',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
+            
+            // Второй контейнер
+            Container(
+              width: 200,
+              height: 150,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Colors.purple, Colors.deepPurple],
+                ),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 2,
+                ),
+              ),
+              child: const Center(
+                child: Text(
+                  'Meow me meow meoww mew mow',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 10,
+                        color: Colors.black,
+                        offset: Offset(2, 2),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          
-          // Expanded с CircleAvatar
-          Expanded(
-            child: Container(
+            
+            // Контейнер с CircleAvatar (заменили Expanded на Container)
+            Container(
+              height: 200, // задаем фиксированную высоту
               padding: const EdgeInsets.all(20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -102,7 +146,11 @@ class MyHomePage extends StatelessWidget {
                     backgroundColor: Colors.deepPurple,
                     child: const Text(
                       'блабла',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   CircleAvatar(
@@ -114,8 +162,8 @@ class MyHomePage extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _onButtonPressed,
