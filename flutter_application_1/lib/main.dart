@@ -36,7 +36,6 @@ class MyHomePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Первый контейнер
             Container(
               width: double.infinity,
               height: 100,
@@ -65,7 +64,6 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
             
-            // Row с тремя текстовыми элементами
             Container(
               padding: const EdgeInsets.all(16),
               child: Row(
@@ -99,7 +97,6 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
             
-            // Второй контейнер
             Container(
               width: 200,
               height: 150,
@@ -134,9 +131,8 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
             
-            // Контейнер с CircleAvatar (заменили Expanded на Container)
             Container(
-              height: 200, // задаем фиксированную высоту
+              height: 200, 
               padding: const EdgeInsets.all(20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
