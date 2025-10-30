@@ -1,4 +1,4 @@
-// lib/main.dart (полная версия)
+// lib/main.dart
 import 'package:flutter/material.dart';
 
 void main() {
@@ -23,8 +23,11 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
-  void _onButtonPressed() {
-    print('Button pressed!');
+  void _onButtonPressed(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SecondPage()),
+    );
   }
 
   @override
@@ -162,9 +165,122 @@ class MyHomePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _onButtonPressed,
+        onPressed: () => _onButtonPressed(context),
         tooltip: 'Пикми',
         child: const Icon(Icons.ac_unit),
+      ),
+    );
+  }
+}
+
+class SecondPage extends StatelessWidget {
+  const SecondPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Вторая страница'),
+       automaticallyImplyLeading: false, 
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFFE1BEE7),
+              Color(0xFFCE93D8),
+              Color(0xFFBA68C8),
+            ],
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Анимированная иконка котика
+              const Icon(
+                Icons.pets,
+                size: 100,
+                color: Colors.white,
+              ),
+              
+              const SizedBox(height: 30),
+              
+              // Красивая карточка с текстом
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(25),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.deepPurple.withOpacity(0.3),
+                      blurRadius: 15,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 2,
+                  ),
+                ),
+                child: const Column(
+                  children: [
+                    Text(
+                      'Мяу! 🐱',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepPurple,
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    Text(
+                      'Вы успешно перешли на вторую страницу!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.purple,
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              const SizedBox(height: 30),
+              
+              // Дополнительная информация в стиле "meow"
+              Container(
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: const Text(
+                  'meow mew meow mew meow\nmew meow mew meow mew',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        backgroundColor: Colors.deepPurple,
+        tooltip: 'Назад',
+        child: const Icon(Icons.arrow_back, color: Colors.white),
       ),
     );
   }
