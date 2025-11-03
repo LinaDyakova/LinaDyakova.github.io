@@ -32,6 +32,9 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _dropdownController = TextEditingController();
+    List<String> _options = ['Apple', 'Banana', 'Orange'];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Лабораторная работа №1'),
@@ -65,6 +68,26 @@ class MyHomePage extends StatelessWidget {
                   ),
                 ),
               ),
+            ),
+            
+            // Добавленный DropdownMenu
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: DropdownMenu(
+                controller: _dropdownController,
+                label: const Text('Выберите фрукт'),
+                onSelected: (String? selectedFruit) {
+                  // Обработка выбранного фрукта
+                  if (selectedFruit != null) {
+                    print('Выбран фрукт: $selectedFruit');
+                  }
+                },
+                dropdownMenuEntries: [
+                  DropdownMenuEntry(
+                    value: 'k',
+                    label: 'k',
+                  )
+                        ]              ),
             ),
             
             Container(
@@ -178,10 +201,13 @@ class SecondPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _secondDropdownController = TextEditingController();
+    List<String> _secondOptions = ['Option 1', 'Option 2', 'Option 3'];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Вторая страница'),
-       automaticallyImplyLeading: false, 
+        automaticallyImplyLeading: false, 
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -204,6 +230,30 @@ class SecondPage extends StatelessWidget {
                 Icons.pets,
                 size: 100,
                 color: Colors.white,
+              ),
+              
+              const SizedBox(height: 30),
+              
+              // DropdownMenu на второй странице
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                child: DropdownMenu<String>(
+                  controller: _secondDropdownController,
+                  width: 250,
+                  label: const Text('Выберите опцию'),
+                  onSelected: (String? selectedOption) {
+                    // Обработка выбранной опции
+                    if (selectedOption != null) {
+                      print('Выбрана опция: $selectedOption');
+                    }
+                  },
+                  dropdownMenuEntries: _secondOptions.map<DropdownMenuEntry<String>>((String value) {
+                    return DropdownMenuEntry<String>(
+                      value: value,
+                      label: value,
+                    );
+                  }).toList(),
+                ),
               ),
               
               const SizedBox(height: 30),
