@@ -36,51 +36,57 @@ class _DriveClubPageState extends State<DriveClubPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text(
-          'DriveClub', // Название сайта вместо "Поиск"
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-            color: Colors.white,
-          ),
+        title: Row(
+          children: [
+            // Название сайта слева
+            const Text(
+              'DriveClub',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(width: 16),
+            // Растянутое поле поиска
+            Expanded(
+              child: Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.grey[900],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: TextField(
+                  controller: _searchController,
+                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: const InputDecoration(
+                    hintText: 'Поиск...',
+                    hintStyle: TextStyle(color: Colors.grey),
+                    prefixIcon: Icon(Icons.search, color: Colors.grey, size: 20),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.zero,
+                    isDense: true,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+            // Аватар пользователя
+            Container(
+              width: 40,
+              height: 40,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.grey,
+              ),
+              child: const Icon(Icons.person, color: Colors.white),
+            ),
+          ],
         ),
-        centerTitle: true,
         backgroundColor: Colors.black,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
-        actions: [
-          // Строка поиска в AppBar
-          Container(
-            width: 200,
-            decoration: BoxDecoration(
-              color: Colors.grey[900],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: TextField(
-              controller: _searchController,
-              style: const TextStyle(color: Colors.white, fontSize: 14),
-              decoration: const InputDecoration(
-                hintText: 'Поиск...',
-                hintStyle: TextStyle(color: Colors.grey),
-                prefixIcon: Icon(Icons.search, color: Colors.grey, size: 20),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              ),
-            ),
-          ),
-          const SizedBox(width: 16),
-          // Аватар пользователя
-          Container(
-            width: 40,
-            height: 40,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.grey,
-            ),
-            child: const Icon(Icons.person, color: Colors.white),
-          ),
-          const SizedBox(width: 16),
-        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -91,42 +97,56 @@ class _DriveClubPageState extends State<DriveClubPage> {
               Row(
                 children: [
                   // Кнопка фильтрации слева
-                  _buildActionButton('Фильтрация'),
-                  const Spacer(),
+                  Expanded(
+                    child: _buildActionButton('Фильтрация'),
+                  ),
+                  const SizedBox(width: 16),
                   // Выпадающий список сортировки справа
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey[900],
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        value: _selectedSortOption,
-                        hint: const Text(
-                          'Сортировка',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
-                        dropdownColor: Colors.grey[900],
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedSortOption = newValue;
-                          });
-                        },
-                        items: <String>[
-                          'По имени',
-                          'По дате',
-                          'По популярности'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
+                  Expanded(
+                    child: Container(
+                      height: 48, // Такая же высота как у кнопки
+                      decoration: BoxDecoration(
+                        color: Colors.grey[900],
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: _selectedSortOption,
+                          isExpanded: true, // Растягиваем на всю ширину контейнера
+                          hint: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
-                              value,
-                              style: const TextStyle(color: Colors.white),
+                              'Сортировка',
+                              style: TextStyle(color: Colors.white),
                             ),
-                          );
-                        }).toList(),
+                          ),
+                          icon: const Padding(
+                            padding: EdgeInsets.only(right: 16),
+                            child: Icon(Icons.arrow_drop_down, color: Colors.white),
+                          ),
+                          dropdownColor: Colors.grey[900],
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              _selectedSortOption = newValue;
+                            });
+                          },
+                          items: <String>[
+                            'По имени',
+                            'По дате',
+                            'По популярности'
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                child: Text(
+                                  value,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ),
                   ),
@@ -145,18 +165,23 @@ class _DriveClubPageState extends State<DriveClubPage> {
   }
 
   Widget _buildActionButton(String text) {
-    return ElevatedButton(
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.grey[900],
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6),
+    return SizedBox(
+      height: 48, // Фиксированная высота для кнопки
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.grey[900],
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(6),
+          ),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Text(
+          text,
+          style: const TextStyle(fontSize: 16),
+        ),
       ),
-      child: Text(text),
     );
   }
 
