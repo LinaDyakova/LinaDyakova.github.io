@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'prof.dart'; // Импортируем страницу профиля
 
 void main() {
   runApp(const MyApp());
@@ -31,6 +32,14 @@ class _DriveClubPageState extends State<DriveClubPage> {
   final TextEditingController _searchController = TextEditingController();
   String? _selectedSortOption;
 
+  void _navigateToProfile() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const ProfilePage(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +47,6 @@ class _DriveClubPageState extends State<DriveClubPage> {
       appBar: AppBar(
         title: Row(
           children: [
-            // Название сайта слева
             const Text(
               'DriveClub',
               style: TextStyle(
@@ -48,7 +56,6 @@ class _DriveClubPageState extends State<DriveClubPage> {
               ),
             ),
             const SizedBox(width: 16),
-            // Растянутое поле поиска
             Expanded(
               child: Container(
                 height: 40,
@@ -72,15 +79,17 @@ class _DriveClubPageState extends State<DriveClubPage> {
               ),
             ),
             const SizedBox(width: 16),
-            // Аватар пользователя
-            Container(
-              width: 40,
-              height: 40,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey,
+            GestureDetector(
+              onTap: _navigateToProfile,
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey,
+                ),
+                child: const Icon(Icons.person, color: Colors.white),
               ),
-              child: const Icon(Icons.person, color: Colors.white),
             ),
           ],
         ),
@@ -93,18 +102,15 @@ class _DriveClubPageState extends State<DriveClubPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              // Секция с кнопками фильтрации и сортировки
               Row(
                 children: [
-                  // Кнопка фильтрации слева
                   Expanded(
                     child: _buildActionButton('Фильтрация'),
                   ),
                   const SizedBox(width: 16),
-                  // Выпадающий список сортировки справа
                   Expanded(
                     child: Container(
-                      height: 48, // Такая же высота как у кнопки
+                      height: 48,
                       decoration: BoxDecoration(
                         color: Colors.grey[900],
                         borderRadius: BorderRadius.circular(6),
@@ -112,7 +118,7 @@ class _DriveClubPageState extends State<DriveClubPage> {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           value: _selectedSortOption,
-                          isExpanded: true, // Растягиваем на всю ширину контейнера
+                          isExpanded: true,
                           hint: const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
@@ -166,7 +172,7 @@ class _DriveClubPageState extends State<DriveClubPage> {
 
   Widget _buildActionButton(String text) {
     return SizedBox(
-      height: 48, // Фиксированная высота для кнопки
+      height: 48,
       child: ElevatedButton(
         onPressed: () {},
         style: ElevatedButton.styleFrom(
