@@ -7,7 +7,7 @@ class HelloPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('стр пр москоу маями'),
+        title: const Text('скр пр дыр москоу маями'),
         backgroundColor: Colors.blue.shade600,
       ),
       body: const Center(
