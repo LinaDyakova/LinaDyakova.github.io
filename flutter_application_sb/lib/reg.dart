@@ -19,7 +19,7 @@ class _RegisterState extends State<Register> {
 
   Future<void> _signUp() async {
     if (_passwordController.text != _confirmPasswordController.text) {
-      if (mounted) {
+      if (mounted) { 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Пароли не совпадают'),

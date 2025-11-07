@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'hello.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -34,8 +35,14 @@ class _LoginState extends State<Login> {
               backgroundColor: Colors.green.shade600,
             ),
           );
-        }
-      }
+      Future.delayed(const Duration(seconds: 10), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HelloPage()),
+      );
+    });
+  }
+}
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
