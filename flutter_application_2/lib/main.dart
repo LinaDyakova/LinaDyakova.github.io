@@ -88,76 +88,89 @@ class _DriveClubPageState extends State<DriveClubPage> {
           Expanded(
             child: ListView(
               children: [
-                _buildFilterItem('марка', 'шифр'),
+                _buildFilterItem('марка'),
                 const SizedBox(height: 20),
-                _buildFilterItem('модель', 'цвет'),
+                _buildFilterItem('модель'),
                 const SizedBox(height: 20),
-                _buildFilterItem('цвет', 'цвет'),
+                _buildFilterItem('цвет'),
                 const SizedBox(height: 20),
-                _buildFilterItem('год', 'искать'),
+                _buildFilterItem('год'),
               ],
             ),
           ),
           
-          // Кнопка сбросить
-          SizedBox(
-            width: double.infinity,
-            child: TextButton(
-              onPressed: () {
-                setState(() {
-                  _selectedBrand = null;
-                  _selectedModel = null;
-                  _selectedColor = null;
-                  _selectedYear = null;
-                });
-                Navigator.of(context).pop();
-              },
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.grey[800],
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6),
+          // Кнопки искать и сбросить (горизонтально)
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(right: 8),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Действие при нажатии на кнопку искать
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.grey[800], // Серый цвет
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                    child: const Text(
+                      'искать',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
                 ),
               ),
-              child: const Text(
-                'сбросить',
-                style: TextStyle(fontSize: 16),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(left: 8),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        _selectedBrand = null;
+                        _selectedModel = null;
+                        _selectedColor = null;
+                        _selectedYear = null;
+                      });
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.grey[800], // Серый цвет
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                    ),
+                    child: const Text(
+                      'сбросить',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFilterItem(String title, String value) {
+  Widget _buildFilterItem(String title) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                value,
-                style: TextStyle(
-                  color: Colors.grey[400],
-                  fontSize: 14,
-                ),
-              ),
-            ],
+        Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
           ),
         ),
-        const SizedBox(width: 8),
         Icon(
           Icons.arrow_forward_ios,
           color: Colors.grey[400],
@@ -229,12 +242,16 @@ class _DriveClubPageState extends State<DriveClubPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Row(
-                children: [
-                  // Кнопка фильтрации с уменьшенной высотой
-                  Expanded(
-                    child: Container(
-                      height: 36, // Уменьшенная высота
+              // Центрированные кнопки фильтрации и сортировки
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Кнопка фильтрации
+                    Container(
+                      width: 200, // Уменьшенная ширина
+                      height: 36,
                       child: TextButton(
                         onPressed: _showFilterDialog,
                         style: TextButton.styleFrom(
@@ -248,18 +265,17 @@ class _DriveClubPageState extends State<DriveClubPage> {
                         child: const Text(
                           'Фильтрация',
                           style: TextStyle(
-                            fontSize: 14, // Уменьшенный размер текста
+                            fontSize: 14,
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 12), // Уменьшенный отступ
-                  
-                  // Кнопка сортировки с уменьшенной высотой
-                  Expanded(
-                    child: Container(
-                      height: 36, // Уменьшенная высота
+                    const SizedBox(width: 12),
+                    
+                    // Кнопка сортировки
+                    Container(
+                      width: 200, // Уменьшенная ширина
+                      height: 36,
                       decoration: BoxDecoration(
                         color: Colors.grey[900],
                         borderRadius: BorderRadius.circular(6),
@@ -268,19 +284,18 @@ class _DriveClubPageState extends State<DriveClubPage> {
                         child: DropdownButton<String>(
                           value: _selectedSortOption,
                           isExpanded: true,
-                          hint: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
+                          hint: Center(
                             child: Text(
                               'Сортировка',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 14, // Уменьшенный размер текста
+                                fontSize: 14,
                               ),
                             ),
                           ),
                           icon: const Padding(
-                            padding: EdgeInsets.only(right: 12), // Уменьшенный отступ для иконки
-                            child: Icon(Icons.arrow_drop_down, color: Colors.white, size: 20), // Уменьшенная иконка
+                            padding: EdgeInsets.only(right: 8),
+                            child: Icon(Icons.arrow_drop_down, color: Colors.white, size: 20),
                           ),
                           dropdownColor: Colors.grey[900],
                           onChanged: (String? newValue) {
@@ -296,12 +311,12 @@ class _DriveClubPageState extends State<DriveClubPage> {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
                                 child: Text(
                                   value,
                                   style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 14, // Уменьшенный размер текста
+                                    fontSize: 14,
                                   ),
                                 ),
                               ),
@@ -310,8 +325,8 @@ class _DriveClubPageState extends State<DriveClubPage> {
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(height: 20),
               _buildPhotoItem('Саша Пулкин'),
