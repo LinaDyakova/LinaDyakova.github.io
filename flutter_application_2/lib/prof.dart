@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'edit_profile_page.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProfPage extends StatefulWidget {
+  const ProfPage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfPage> createState() => _ProfPageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfPageState extends State<ProfPage> {
   final ScrollController _scrollController = ScrollController();
   bool _showScrollToTopButton = false;
+  
+  // Данные профиля
+  String _name = 'Иван Иванов';
+  String _username = '@ivanov';
+  String _bio = 'Это описание моего профиля. Здесь я рассказываю о себе и своих интересах.';
 
   @override
   void initState() {
@@ -18,7 +24,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _scrollListener() {
-    // Показываем кнопку, когда прокрутка больше 300 пикселей
     if (_scrollController.offset >= 300 && !_showScrollToTopButton) {
       setState(() {
         _showScrollToTopButton = true;
@@ -36,6 +41,15 @@ class _ProfilePageState extends State<ProfilePage> {
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
+  }
+
+  // Функция для обновления данных профиля после редактирования
+  void _updateProfile(String name, String username, String bio) {
+    setState(() {
+      _name = name;
+      _username = username;
+      _bio = bio;
+    });
   }
 
   @override
@@ -70,10 +84,20 @@ class _ProfilePageState extends State<ProfilePage> {
             margin: const EdgeInsets.only(right: 8),
             child: ElevatedButton(
               onPressed: () {
-                // Действие при нажатии на кнопку редактировать
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfilePage(
+                      name: _name,
+                      username: _username,
+                      bio: _bio,
+                      onProfileUpdated: _updateProfile,
+                    ),
+                  ),
+                );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey[800], // Серый цвет
+                backgroundColor: Colors.grey[800],
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 shape: RoundedRectangleBorder(
@@ -115,15 +139,19 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(width: 16),
                   
-                  // Статистика
+                  // Статистика - выровнена по центру относительно аватара
                   Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildStatItem('20.1K', 'Подписчики'),
-                        _buildStatItem('1.2K', 'Подписки'),
-                        _buildStatItem('15', 'Постов'),
-                      ],
+                    child: Container(
+                      height: 200, // Такая же высота как у аватара
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          _buildStatItem('20.1K', 'Подписчики'),
+                          _buildStatItem('1.2K', 'Подписки'),
+                          _buildStatItem('15', 'Постов'),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -132,18 +160,18 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 16),
               
               // Имя и юзернейм
-              const Text(
-                'Иван Иванов',
-                style: TextStyle(
+              Text(
+                _name,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 4),
-              const Text(
-                '@ivanov',
-                style: TextStyle(
+              Text(
+                _username,
+                style: const TextStyle(
                   color: Colors.grey,
                   fontSize: 14,
                 ),
@@ -163,9 +191,9 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 4),
               
               // Описание
-              const Text(
-                'Это описание моего профиля. Здесь я рассказываю о себе и своих интересах.',
-                style: TextStyle(
+              Text(
+                _bio,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 14,
                 ),
@@ -173,24 +201,24 @@ class _ProfilePageState extends State<ProfilePage> {
               
               const SizedBox(height: 16),
               
-             GridView.builder(
-  shrinkWrap: true,
-  physics: const NeverScrollableScrollPhysics(),
-  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-    crossAxisCount: 3,
-    crossAxisSpacing: 4,
-    mainAxisSpacing: 4,
-    childAspectRatio: 1,
-  ),
-  itemCount: 15,
-  itemBuilder: (context, index) {
-    return Container(
-      margin: const EdgeInsets.all(20), // внешние отступы уменьшат видимый размер
-      color: Colors.grey[800],
-      child: const Icon(Icons.photo, color: Colors.grey, size: 16),
-    );
-  },
-),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
+                  childAspectRatio: 1,
+                ),
+                itemCount: 15,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.all(20),
+                    color: Colors.grey[800],
+                    child: const Icon(Icons.photo, color: Colors.grey, size: 16),
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -199,7 +227,7 @@ class _ProfilePageState extends State<ProfilePage> {
       floatingActionButton: _showScrollToTopButton
           ? FloatingActionButton(
               onPressed: _scrollToTop,
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.grey,
               child: const Icon(Icons.arrow_upward, color: Colors.black),
             )
           : null,
@@ -208,6 +236,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildStatItem(String count, String label) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           count,

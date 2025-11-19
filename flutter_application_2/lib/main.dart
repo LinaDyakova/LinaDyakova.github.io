@@ -32,11 +32,138 @@ class _DriveClubPageState extends State<DriveClubPage> {
   final TextEditingController _searchController = TextEditingController();
   String? _selectedSortOption;
 
+  // Переменные для фильтрации
+  String? _selectedBrand;
+  String? _selectedModel;
+  String? _selectedColor;
+  String? _selectedYear;
+
   void _navigateToProfile() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const ProfilePage(),
+        builder: (context) => const ProfPage(),
       ),
+    );
+  }
+
+  // Функция для показа окна фильтрации с левой стороны
+  void _showFilterDialog() {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black54,
+      builder: (BuildContext context) {
+        return Align(
+          alignment: Alignment.centerLeft,
+          child: Material(
+            color: Colors.transparent,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.25, // 1/4 экрана
+              height: double.infinity,
+              color: Colors.grey[900],
+              child: _buildFilterContent(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildFilterContent() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Фильтрация',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 30),
+          
+          // Список фильтров
+          Expanded(
+            child: ListView(
+              children: [
+                _buildFilterItem('марка', 'шифр'),
+                const SizedBox(height: 20),
+                _buildFilterItem('модель', 'цвет'),
+                const SizedBox(height: 20),
+                _buildFilterItem('цвет', 'цвет'),
+                const SizedBox(height: 20),
+                _buildFilterItem('год', 'искать'),
+              ],
+            ),
+          ),
+          
+          // Кнопка сбросить
+          SizedBox(
+            width: double.infinity,
+            child: TextButton(
+              onPressed: () {
+                setState(() {
+                  _selectedBrand = null;
+                  _selectedModel = null;
+                  _selectedColor = null;
+                  _selectedYear = null;
+                });
+                Navigator.of(context).pop();
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.grey[800],
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                ),
+              ),
+              child: const Text(
+                'сбросить',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterItem(String title, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                value,
+                style: TextStyle(
+                  color: Colors.grey[400],
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 8),
+        Icon(
+          Icons.arrow_forward_ios,
+          color: Colors.grey[400],
+          size: 16,
+        ),
+      ],
     );
   }
 
@@ -104,13 +231,35 @@ class _DriveClubPageState extends State<DriveClubPage> {
             children: [
               Row(
                 children: [
-                  Expanded(
-                    child: _buildActionButton('Фильтрация'),
-                  ),
-                  const SizedBox(width: 16),
+                  // Кнопка фильтрации с уменьшенной высотой
                   Expanded(
                     child: Container(
-                      height: 48,
+                      height: 36, // Уменьшенная высота
+                      child: TextButton(
+                        onPressed: _showFilterDialog,
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.grey[900],
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                        child: const Text(
+                          'Фильтрация',
+                          style: TextStyle(
+                            fontSize: 14, // Уменьшенный размер текста
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12), // Уменьшенный отступ
+                  
+                  // Кнопка сортировки с уменьшенной высотой
+                  Expanded(
+                    child: Container(
+                      height: 36, // Уменьшенная высота
                       decoration: BoxDecoration(
                         color: Colors.grey[900],
                         borderRadius: BorderRadius.circular(6),
@@ -123,12 +272,15 @@ class _DriveClubPageState extends State<DriveClubPage> {
                             padding: EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
                               'Сортировка',
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14, // Уменьшенный размер текста
+                              ),
                             ),
                           ),
                           icon: const Padding(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Icon(Icons.arrow_drop_down, color: Colors.white),
+                            padding: EdgeInsets.only(right: 12), // Уменьшенный отступ для иконки
+                            child: Icon(Icons.arrow_drop_down, color: Colors.white, size: 20), // Уменьшенная иконка
                           ),
                           dropdownColor: Colors.grey[900],
                           onChanged: (String? newValue) {
@@ -147,7 +299,10 @@ class _DriveClubPageState extends State<DriveClubPage> {
                                 padding: const EdgeInsets.symmetric(horizontal: 16),
                                 child: Text(
                                   value,
-                                  style: const TextStyle(color: Colors.white),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14, // Уменьшенный размер текста
+                                  ),
                                 ),
                               ),
                             );
@@ -165,27 +320,6 @@ class _DriveClubPageState extends State<DriveClubPage> {
               _buildPhotoItem('Анна Сидорова'),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActionButton(String text) {
-    return SizedBox(
-      height: 48,
-      child: ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor: Colors.grey[900],
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(6),
-          ),
-        ),
-        child: Text(
-          text,
-          style: const TextStyle(fontSize: 16),
         ),
       ),
     );
