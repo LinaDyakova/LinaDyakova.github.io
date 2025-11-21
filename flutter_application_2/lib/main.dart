@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'prof.dart'; // Импортируем страницу профиля
+import 'authorization_page.dart'; // Импортируем страницу авторизации
+import 'registration_page.dart'; // Импортируем страницу регистрации
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +18,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.black,
       ),
-      home: const DriveClubPage(),
+      home: const AuthorizationPage(), // Стартовая страница - авторизация
+      routes: {
+        '/main': (context) => const DriveClubPage(),
+        '/profile': (context) => const ProfPage(),
+        '/auth': (context) => const AuthorizationPage(),
+        '/registration': (context) => const RegistrationPage(),
+      },
     );
   }
 }
@@ -43,6 +51,52 @@ class _DriveClubPageState extends State<DriveClubPage> {
       MaterialPageRoute(
         builder: (context) => const ProfPage(),
       ),
+    );
+  }
+
+  void _logout() {
+    // Показываем диалог подтверждения выхода
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.grey[900],
+          title: const Text(
+            'Выход',
+            style: TextStyle(color: Colors.white),
+          ),
+          content: const Text(
+            'Вы уверены, что хотите выйти?',
+            style: TextStyle(color: Colors.grey),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'Отмена',
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                // Переходим на страницу авторизации
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const AuthorizationPage(),
+                  ),
+                );
+              },
+              child: const Text(
+                'Выйти',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -219,6 +273,25 @@ class _DriveClubPageState extends State<DriveClubPage> {
               ),
             ),
             const SizedBox(width: 16),
+            // Кнопка выхода (круглая, слева от аватара)
+            GestureDetector(
+              onTap: _logout,
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey[700],
+                ),
+                child: const Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            // Аватар профиля
             GestureDetector(
               onTap: _navigateToProfile,
               child: Container(
@@ -306,7 +379,8 @@ class _DriveClubPageState extends State<DriveClubPage> {
                           items: <String>[
                             'По имени',
                             'По дате',
-                            'По популярности'
+                            'По популярности',
+                            'Без сортировки'
                           ].map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
