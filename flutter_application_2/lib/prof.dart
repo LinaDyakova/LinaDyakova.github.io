@@ -1,5 +1,7 @@
+// prof_page.dart
 import 'package:flutter/material.dart';
 import 'edit_profile_page.dart';
+import 'add_post_page.dart'; // Добавьте этот импорт
 
 class ProfPage extends StatefulWidget {
   const ProfPage({super.key});
@@ -196,6 +198,36 @@ class _ProfPageState extends State<ProfPage> {
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 14,
+                ),
+              ),
+              
+              const SizedBox(height: 16),
+              
+              // Кнопка добавить публикацию
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AddPostPage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey[800],
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Text(
+                    'Добавить публикацию',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
               

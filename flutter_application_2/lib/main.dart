@@ -1,7 +1,9 @@
+// main.dart (обновленная версия)
 import 'package:flutter/material.dart';
 import 'prof.dart'; // Импортируем страницу профиля
 import 'authorization_page.dart'; // Импортируем страницу авторизации
 import 'registration_page.dart'; // Импортируем страницу регистрации
+import 'post_detail_page.dart'; // Добавьте этот импорт
 
 void main() {
   runApp(const MyApp());
@@ -403,10 +405,10 @@ class _DriveClubPageState extends State<DriveClubPage> {
                 ),
               ),
               const SizedBox(height: 20),
-              _buildPhotoItem('Саша Пулкин'),
-              _buildPhotoItem('Мария Иванова'),
-              _buildPhotoItem('Петр Петров'),
-              _buildPhotoItem('Анна Сидорова'),
+              _buildPhotoItem('Саша Пулкин', 'Моя новая машина! Очень доволен покупкой.'),
+              _buildPhotoItem('Мария Иванова', 'Прекрасный день для поездки за город.'),
+              _buildPhotoItem('Петр Петров', 'Тюнинг завершен. Что думаете?'),
+              _buildPhotoItem('Анна Сидорова', 'Первая фотография моей новой машины!'),
             ],
           ),
         ),
@@ -414,7 +416,7 @@ class _DriveClubPageState extends State<DriveClubPage> {
     );
   }
 
-  Widget _buildPhotoItem(String userName) {
+  Widget _buildPhotoItem(String userName, String description) {
     return Column(
       children: [
         Row(
@@ -436,14 +438,31 @@ class _DriveClubPageState extends State<DriveClubPage> {
           ],
         ),
         const SizedBox(height: 8),
-        Container(
-          width: double.infinity,
-          height: 200,
-          decoration: BoxDecoration(
-            color: Colors.grey[800],
-            borderRadius: BorderRadius.circular(8),
+        
+        // Область фотографии с GestureDetector
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PostDetailPage(
+                  userName: userName,
+                  description: description,
+                  images: ['image1', 'image2', 'image3'], // Пример списка изображений
+                  initialLikes: 15, // Начальное количество лайков
+                ),
+              ),
+            );
+          },
+          child: Container(
+            width: double.infinity,
+            height: 200,
+            decoration: BoxDecoration(
+              color: Colors.grey[800],
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Icon(Icons.photo, color: Colors.grey, size: 50),
           ),
-          child: const Icon(Icons.photo, color: Colors.grey, size: 50),
         ),
         const SizedBox(height: 16),
       ],
